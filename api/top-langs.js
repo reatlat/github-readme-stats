@@ -1,5 +1,6 @@
 import { renderTopLanguages } from "../src/cards/top-languages-card.js";
 import { blacklist } from "../src/common/blacklist.js";
+import { allowedList } from "../src/common/allowedList.js";
 import {
   clampValue,
   CONSTANTS,
@@ -34,10 +35,15 @@ export default async (req, res) => {
     disable_animations,
     hide_progress,
   } = req.query;
+
   res.setHeader("Content-Type", "image/svg+xml");
 
   if (blacklist.includes(username)) {
     return res.send(renderError("Something went wrong"));
+  }
+
+  if (!allowedList.includes(username)) {
+    return res.send(renderError("You don't belong here"));
   }
 
   if (locale && !isLocaleAvailable(locale)) {

@@ -1,5 +1,6 @@
 import { renderRepoCard } from "../src/cards/repo-card.js";
 import { blacklist } from "../src/common/blacklist.js";
+import { allowedList } from "../src/common/allowedList.js";
 import {
   clampValue,
   CONSTANTS,
@@ -30,6 +31,10 @@ export default async (req, res) => {
 
   if (blacklist.includes(username)) {
     return res.send(renderError("Something went wrong"));
+  }
+
+  if (!allowedList.includes(username)) {
+    return res.send(renderError("You don't belong here"));
   }
 
   if (locale && !isLocaleAvailable(locale)) {
